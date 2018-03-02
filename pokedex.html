@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- Rick Yost
+2 Mar 2018
+Pokemon Assignment -->
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Pokemon</title>
+<!-- 	<link rel="stylesheet" type="text/css" href=""> -->
+	<style>
+		.pokedex {
+			display: inline-block;
+			border: 15px solid red;
+			width: 15%;
+			min-height: 400px;
+			padding: 0px 30px;
+		}
+		#poke {
+			width: 70%; 
+			display: inline-block;
+			vertical-align: top;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+		"use strict";
+
+		$(document).ready(function() {
+			for(var i = 1; i < 152; i++) {
+				var pokemon = `<img	id=${i} src=https://pokeapi.co/media/img/${i}.png>`;
+				$('#poke').append(pokemon);
+			}
+			$(document).on("click", "img", function() {
+				var getid = $(this).attr("id");
+				$.get(`https://pokeapi.co/api/v2/pokemon/${getid}/`, function(res) {
+	                var html_str = "";
+	                html_str += "<h1>" + res.name + "</h1>";
+	                html_str += `<img	id="${getid}" src="https://pokeapi.co/media/img/${getid}.png">`
+	                html_str += "<h4>Types</h4>";
+	                html_str += "<ul>"; 
+	                for(var i = 0; i < res.types.length; i++) {
+	                    html_str += "<li>" + res.types[i].type.name + "</li>";
+	                }
+	                html_str += "</ul>";
+	                html_str += "<h4>Height</h4>";
+	                html_str += "<p>" + res.height + "</p>";
+	                html_str += "<h4>Weight</h4>";
+	                html_str += "<p>" + res.weight + "</p>";
+	                $(".pokedex").html(html_str);
+	            }, "json");
+			});
+		});	
+	</script>
+</head>
+<body>
+	<div id="poke"></div>
+	<div class="pokedex"></div>
+</body>
+</html>
